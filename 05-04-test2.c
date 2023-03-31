@@ -4,13 +4,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 int main(){
-	DIR *dirp;
+ DIR *dirp;
  struct dirent *dentry;
- if((dirp=opendir("."))==NULL)
-	 exit(1);
+ int a=0;
+ dirp=opendir(".");
  while(dentry=readdir(dirp)){
-	 if(dentry->d_ino!=0)
-		printf("%s\n",dentry->d_name);
-	}
+  if(dentry->d_ino!=0)
+   a++;
+ }
+ printf("%d\n",a);
  closedir(dirp);
 }
