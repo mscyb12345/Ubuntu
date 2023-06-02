@@ -2,15 +2,16 @@
 #include<sys/wait.h>
 #include<sys/types.h>
 #include<unistd.h>
-
+#include<stdio.h>
+#include<stdlib.h>
 #define MSGSIZE 16
 
-void parent(int [][]);
+void parent(int []);
 int child(int []);
 
-void onerror(char *msg);
+void onerror(char *msg)
 {
-	printf("%s");
+	printf("%s",msg);
 	exit(1);
 }
 
@@ -27,7 +28,7 @@ int main(){
 		onerror("fail to call pipe() #1\n");
 	if(pipe(p2)==-1)
 		onerror("fail to call pipe() #2\n");
-	if((pid=fork())==-1)
+	if((pid1=fork())==-1)
 		onerror("fail to call fork() #1\n");
 	if(pid1>0)
 		if((pid2=fork())==-1)
@@ -70,4 +71,10 @@ int main(){
 		
 		for(int i=0;i<3;i++){
 			sleep((i+3)%4);
-			printf(child
+			printf("child2: send message %d\n",i);
+			write(p2[1],"i'm child2",MSGSIZE);
+		}
+		printf("child2: bye!\n");
+		exit(0);
+	}
+}
